@@ -1,0 +1,101 @@
+swagger: "2.0"
+info:
+  description: "URL リストを生成するAPI"
+  version: "1.0.0"
+  title: "URL List API"
+  license:
+    name: "MIT License"
+    url: "https://ja.osdn.net/projects/opensource/wiki/licenses%2FMIT_license"
+basePath: "/v1"
+tags:
+- name: "List"
+- name: "URL"
+
+schemes:
+- "https"
+paths:
+  /lists:
+    post:
+      tags:
+      - "List"
+      summary: "List の作成"
+      parameters:
+      - name: "List Object"
+        in: "body"
+        required: true
+        type: "object"
+        properties:
+          titlle:
+            type: "string"
+            required: true
+          description:
+            type: "string"
+            required: false
+      produces:
+      - "application/json"
+      responses:
+        201:
+          description: "Created"
+          schema:
+            $ref: '#/definitions/List'
+  /lists/{id}:
+    get:
+      summary: "List の取得"
+      tags:
+      - "List"
+      parameters:
+      - name: "List ID"
+        in: "path"
+        description: "List 固有の ID"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/List'
+    post:
+      summary: "URL の追加"
+      tags:
+      - "URL"
+      parameters:
+      - name: URL Object
+        in: body
+        required: true
+        schema:
+          $ref: '#/definitions/Url'
+      responses:
+        200:
+          description: OK
+
+    delete:
+      summary: "List の削除"
+      tags:
+      - "List"
+      responses:
+        200:
+          description: OK
+
+definitions:
+  Url:
+    type: "object"
+    properties:
+      title:
+        type: "string"
+      description:
+        type: "string"
+      url:
+        type: "string"
+  List:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      description:
+        type: "string"
+      urls:
+        type: "array"
+        items:
+          $ref: '#/definitions/Url'
